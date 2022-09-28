@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-mongoose.connect('mongodb://localhost:27017/passport');
+mongoose.connect('mongodb://localhost:3001/passport');
 
 const userSchema = mongoose.Schema({
     username: String,

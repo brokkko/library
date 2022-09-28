@@ -12,7 +12,7 @@
     <div class="form-structor">
         <div class="signup">
             <h2 class="form-title" id="signup"><span>or</span>Sign up</h2>
-            <form action="/library" method="post">
+            <form action="/signin" method="post">
                 <div class="form-holder">
                     <input type="text" name="username" id="new-username" class="input" placeholder="Name" />
                     <input type="password" name="password" id="new-password" class="input" placeholder="Password" />
@@ -24,7 +24,7 @@
         <div class="login slide-up">
             <div class="center">
                 <h2 class="form-title" id="login"><span>or</span>Log in</h2>
-                <form method="GET">
+                <form action="/signup" method="post">
                     <div class="form-holder">
                         <input type="text" id="username" class="input" placeholder="Email" />
                         <input type="password"  id="password" class="input" placeholder="Password" />
