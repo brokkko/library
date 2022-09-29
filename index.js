@@ -1,20 +1,11 @@
 import express from 'express';
 import path from 'path';
-import passport from 'passport';
-import { Strategy as LocalStrategy } from "passport-local";
-import bodyParser from 'body-parser';
 import session from 'express-session';
-import Surreal from "surrealdb.js";
-
-const db = new Surreal('http://127.0.0.1:8000/rpc');
-await db.signin({
-    user: 'root',
-    pass: 'root',
-});
-await db.use('web', 'library');
+import passport from 'passport';
+import {hashSync} from "bcrypt";
+import bodyParser from 'body-parser';
 
 
-// const MongoStore = connectMongo(session);
 const __dirname = path.resolve();
 const PORT = 3000;
 const app = express();
