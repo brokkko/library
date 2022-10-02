@@ -1,77 +1,99 @@
 import express from 'express';
-import path from 'path';
-import session from 'express-session';
-import passport from 'passport';
-import {hashSync} from "bcrypt";
-import bodyParser from 'body-parser';
-
-
-const __dirname = path.resolve();
-const PORT = 3000;
 const app = express();
+import bcrypt from 'bcrypt';
+import passport from 'passport';
+import flash from 'express-flash';
+import session from 'express-session';
+import methodOverride from 'method-override';
+import userPassport from './passport/passport-config.js';
+import fs from 'fs';
 
-app.use(express.static(__dirname + '/routes'));
+userPassport.initialize(
+    passport,
+    email => users.find(user => user.email === email),
+    id => users.find(user => user.id === id)
+)
+
+const loadJSON = (path) => JSON.parse(fs.readFileSync(new URL(path, import.meta.url)));
+const usersFromDB = loadJSON('./passport/database.json');
+let users = []
+for(let i in usersFromDB)
+    users.push(usersFromDB[i]);
+
+app.set('view-engine', 'ejs')
+app.use(express.urlencoded({ extended: false }))
+app.use(flash())
 app.use(session({
-    secret: 'keyboard cat',
+    secret: "hihihi",
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
+    saveUninitialized: false
 }))
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(methodOverride('_method'))
 
-
-
-passport.use(new LocalStrategy(
-    async function (username, password, done) {
-        console.log("in local strategy")
-        let usersArray = await db.select("User");
-        let user = usersArray.find((elem) => elem.username === username && elem.password === password);
-        console.log(user.username, user.password);
-        if(!user) {
-            console.log("Error: user doesn't exist")
-            return done(null, false);
-        }
-        console.log("Done: user exists")
-        return done(null, user);
-    }
-));
-
-app.post('/signin', async (req, res) => {
-    console.log("post")
-    // Create a new person with a random id
-    let created = await db.create("User", {
-        username: req.body.username,
-        password: req.body.password,
-        marketing: true,
-        identifier: Math.random().toString(36).substr(2, 10),
-    });
-    console.log("created")
-    // res.send({ success: true })
-    res.redirect("/library.html");
-
+app.get('/', checkAuthenticated, (req, res) => {
+    res.render('index.ejs', { name: req.user.name })
 })
 
-app.post('/signup', passport.authenticate('local', {
-    successRedirect: '/library.html',
-    failureRedirect: '/',
-    session: false
-}));
+app.get('/login', checkNotAuthenticated, (req, res) => {
+    res.render('login.ejs')
+})
 
+app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true
+}))
 
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
+app.get('/register', checkNotAuthenticated, (req, res) => {
+    res.render('register.ejs')
+})
 
-passport.deserializeUser(async function (id, done) {
-    let usersArray = await db.select("User");
-    let user = usersArray.find((elem) => elem.id === id);
-    if(user) done(null, user)
-});
+app.post('/register', checkNotAuthenticated, async (req, res) => {
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+        let id = Date.now().toString();
+        users.push({
+            id: id,
+            name: req.body.name,
+            email: req.body.email,
+            password: hashedPassword
+        })
+        // ------------- json -----------------
+        const jsonContent = JSON.stringify(users);
+        fs.writeFile("./passport/database.json", jsonContent, 'utf8', function (err) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log("The file was saved!");
+        });
+        // ------------------------------------
 
-app.listen(PORT, () => {
-    console.log("Server started")
-});
+        res.redirect('/login')
+    } catch {
+        res.redirect('/register')
+    }
+})
 
+app.delete('/logout', (req, res) => {
+    req.logOut()
+    res.redirect('/login')
+})
 
+function checkAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next()
+    }
+
+    res.redirect('/login')
+}
+
+function checkNotAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return res.redirect('/')
+    }
+    next()
+}
+
+app.listen(3000)
