@@ -1,4 +1,59 @@
-<h1>Hi <%= name %></h1>
-<form action="/logout?_method=DELETE" method="POST">
-    <button type="submit">Log Out</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head.ejs'); %>
+</head>
+<body class="container">
+    <header>
+        <%- include('./partials/header.ejs'); %>
+    </header>
+    <main>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="jumbotron">
+                    <ul>
+                        <% books.forEach(function(book) { %>
+
+                                <li>
+                                    <strong><%= book.author %></strong>
+                                    Title <%= book.title %>, release <%= book.release %>
+                                </li>
+<!--                                <button type="submit">Удалить</button>-->
+
+                        <% }); %>
+                    </ul>
+                    <form>
+                        <button type="submit">Log Out</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="well">
+                    <form action="/library" method="POST">
+                        <div>
+                            <label for="author">Автор</label>
+                            <input type="text" id="author" name="author" required>
+                        </div>
+                        <div>
+                            <label for="title">Название</label>
+                            <input type="text" id="title" name="title" required>
+                        </div>
+                        <div>
+                            <label for="release">Дата выпуска</label>
+                            <input type="text" id="release" name="release" required>
+                        </div>
+                        <button type="submit">Добавить книгу</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <%- include('./partials/footer.ejs'); %>
+    </footer>
+
+</body>
+</html>
