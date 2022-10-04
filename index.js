@@ -1,29 +1,91 @@
 import express from 'express';
-import path from 'path';
+const app = express();
+import passport from 'passport';
+import flash from 'express-flash';
+import session from 'express-session';
+import methodOverride from 'method-override';
+import userPassport from './passport/passport-config.js';
+import fs from 'fs';
+import BookStorage from "./storage/BookStorage.js";
 
-// const __dirname = path.resolve();
-// const PORT = 3000;
-// const app = express();
-// app.listen(PORT, () => {
-//     console.log("Server started")
-// });
-//
-// app.use(express.routes(path.resolve(__dirname, 'routes')));
+console.log("Start")
 
-// app.get('/', (req, res) => {
-//     // res.send('<h1>Test</h1>');
-//     res.sendFile(path.resolve(__dirname, 'routes', 'index.html'));
-// })
+userPassport.initialize(
+    passport,
+    email => admin,
+    id => admin
+)
 
-import { createClient } from 'redis';
+const loadJSON = (path) => JSON.parse(fs.readFileSync(new URL(path, import.meta.url)));
+let admin = loadJSON('./passport/admin.json');
+let bookStorage = new BookStorage();
 
-const client = createClient();
+app.set('view-engine', 'ejs')
+app.use(express.urlencoded({ extended: false }))
+app.use(flash())
+app.use(session({
+    secret: "hihihi",
+    resave: true,
+    saveUninitialized: false
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(methodOverride('_method'))
 
-client.on('error', (err) => console.log('Redis Client Error', err));
+app.get('/', checkAuthenticated, (req, res) => {
+    console.log(req.session)
+    res.render('index.ejs', { books: bookStorage.books })
+})
 
-await client.connect();
+app.get('/login', checkNotAuthenticated, (req, res) => {
+    res.render('login.ejs')
+})
 
-await client.set('key', 'value');
-const value = await client.get('key');
+app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true
+}))
+
+app.get('/register', checkNotAuthenticated, (req, res) => {
+    res.render('register.ejs')
+})
+
+app.post('/register', checkNotAuthenticated, async (req, res) => {
+    try {
+        res.redirect('/login')
+    } catch {
+        res.redirect('/register')
+    }
+})
+
+app.delete('/logout', (req, res) => {
+    req.logOut()
+    res.redirect('/login')
+})
+
+function checkAuthenticated(req, res, next) {
+    if (req.session.passport) {
+        return next();
+    }
+
+    res.redirect('/login')
+}
+
+function checkNotAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return res.redirect('/')
+    }
+    next()
+}
+
+app.post('/library', (req, res) => {
+    if( req.body.author && req.body.title && req.body.release ) {
+        bookStorage.addBook(req.body.author, req.body.title, req.body.release);
+    }
+    res.redirect('/')
+});
 
 
+
+app.listen(3000)
