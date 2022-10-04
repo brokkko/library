@@ -65,7 +65,6 @@ app.delete('/logout', (req, res) => {
 })
 
 function checkAuthenticated(req, res, next) {
-    console.log(req.session)
     if (req.session.passport) {
         return next();
     }
@@ -81,12 +80,9 @@ function checkNotAuthenticated(req, res, next) {
 }
 
 app.post('/library', (req, res) => {
-    console.log("BEFORE SAVE: ", req.session)
     if( req.body.author && req.body.title && req.body.release ) {
         bookStorage.addBook(req.body.author, req.body.title, req.body.release);
-        console.log("Saved")
     }
-    console.log("AFTER SAVE: ", req.session)
     res.redirect('/')
 });
 
