@@ -27,6 +27,15 @@ export default class BookStorage {
         });
     }
 
+    #getById = (id) => {
+        let book;
+        this.books.forEach((elem) => {
+            if(elem.id === id)
+                book = elem;
+        })
+        return book;
+    }
+
     addBook = (author, title, release) => {
         this.books.push({
             id: "id" + Math.random().toString(16).slice(2),
@@ -37,6 +46,14 @@ export default class BookStorage {
             currentUser: "",
             returnDate: ""
         })
+        this.#updateBookStorage();
+    }
+
+    deleteById = (id) => {
+        let index = this.books.indexOf(this.#getById(id));
+        if (index !== -1) {
+            this.books.splice(index, 1);
+        }
         this.#updateBookStorage();
     }
 
