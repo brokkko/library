@@ -8,8 +8,6 @@ import userPassport from './passport/passport-config.js';
 import fs from 'fs';
 import BookStorage from "./storage/BookStorage.js";
 
-console.log("Start")
-
 userPassport.initialize(
     passport,
     email => admin,
