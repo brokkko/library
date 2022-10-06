@@ -33,6 +33,10 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'));
 
+app.use(express.json({
+    type: ['application/json', 'text/plain']
+}))
+
 app.use('/', router);
 
 

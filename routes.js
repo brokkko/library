@@ -1,13 +1,13 @@
 import express from 'express';
 import passport from 'passport';
 import BookStorage from "./storage/BookStorage.js";
+import path from "path";
 
 const router = express.Router();
-
+const __dirname = path.resolve();
 let bookStorage = new BookStorage();
 
 router.get('/', checkAuthenticated, (req, res) => {
-    console.log(req.session)
     res.render('index.ejs', { books: bookStorage.books })
 })
 
@@ -42,7 +42,6 @@ function checkAuthenticated(req, res, next) {
     if (req.session.passport) {
         return next();
     }
-
     res.redirect('/login')
 }
 
@@ -60,9 +59,20 @@ router.post('/library', (req, res) => {
     res.redirect('/')
 });
 
+router.get('/library/:id', (req, res) => {
+    res.render('bookPage.ejs', {book: bookStorage.getById(req.params.id)})
+})
+
+router.put('/library/:id', (req, res) => {
+    let mapData = new Map(Object.entries(req.body));
+    mapData.forEach((value, key) => {
+        console.log(key, value);
+        bookStorage.updateBook(req.params.id, key, value);
+    })
+    res.render('bookPage.ejs', {book: bookStorage.getById(req.params.id)})
+});
+
 router.delete('/library/:id', (req, res) => {
-    console.log("IN INDEX")
-    console.log(req.params.id)
     bookStorage.deleteById(req.params.id);
     res.sendStatus(200);
 })

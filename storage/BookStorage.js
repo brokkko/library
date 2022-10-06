@@ -20,14 +20,10 @@ export default class BookStorage {
 
     #updateBookStorage = () => {
         const jsonContent = JSON.stringify(this.books);
-        fs.writeFile("./storage/bookStorage.json", jsonContent, 'utf8', function (err) {
-            if (err) {
-                console.log(err);
-            }
-        });
+        fs.writeFileSync('./storage/bookStorage.json', JSON.stringify(this.books));
     }
 
-    #getById = (id) => {
+    getById = (id) => {
         let book;
         this.books.forEach((elem) => {
             if(elem.id === id)
@@ -36,21 +32,35 @@ export default class BookStorage {
         return book;
     }
 
-    addBook = (author, title, release) => {
+    addBook = (author, title, release, status = true, currentUser = "", returnDate = "", id = "id" + Math.random().toString(16).slice(2)) => {
         this.books.push({
-            id: "id" + Math.random().toString(16).slice(2),
+            id: id,
             author: author,
             title: title,
             release: release,
-            available: true,
-            currentUser: "",
-            returnDate: ""
+            available: status,
+            currentUser: currentUser,
+            returnDate: returnDate
         })
         this.#updateBookStorage();
     }
 
+    updateBook = (id, fieldName, updatedInfo) => {
+        let book = this.getById(id);
+        switch (fieldName) {
+            case "author": book.author = updatedInfo; break;
+            case "title": book.title = updatedInfo; break;
+            case "release": book.release = updatedInfo; break;
+            case "available": book.available = updatedInfo; break;
+            case "currentUser": book.currentUser = updatedInfo; break;
+            case "returnDate": book.returnDate = updatedInfo.toString(); break;
+        }
+        this.deleteById(id);
+        this.addBook(book.author, book.title, book.release, book.available, book.currentUser, book.returnDate, book.id);
+    }
+
     deleteById = (id) => {
-        let index = this.books.indexOf(this.#getById(id));
+        let index = this.books.indexOf(this.getById(id));
         if (index !== -1) {
             this.books.splice(index, 1);
         }

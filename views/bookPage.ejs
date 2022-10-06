@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head.ejs'); %>
+</head>
+<body class="container">
+<script type="text/javascript" src="/js/client.js" defer></script>
+<script type="text/javascript" src="/js/bookPageClient.js" defer></script>
+<link href="/css/bookPage.css" rel="stylesheet" type="text/css">
+
+<main>
+   <div class="bookPage">
+
+      <div class="left-wrapper">
+         <img src="/images/book.png" />
+      </div>
+
+      <div class="right-wrapper">
+         <div class="page-info">
+            <ul>
+
+               <li>
+                  Автор:
+                  <div contenteditable="true" id="author-editor">
+                     <strong><%= book.author %></strong>
+                  </div>
+                  <br>
+                  Название:
+                  <div contenteditable="true" id="title-editor">
+                     <%= book.title %>
+                  </div>
+                  <br>
+                  Дата выхода:
+                  <div contenteditable="true" id="release-editor">
+                     <%= book.release %>
+                  </div>
+                  <br>
+                  <% if(book.available) { %>
+                     Книга доступна в библиотеке
+                     <br>
+                     <%- include('./partials/user-dialog.ejs'); %>
+                     <button id="getBookButton" data-id="<%=book.id%>">Выдать</button>
+                  <% } else { %>
+                     Книга на руках
+                     <br>
+                     Пользователь: <%= book.currentUser %>
+                     <br>
+                     Когда должен вернуть: <%= book.returnDate %>
+                     <br>
+                     <button id="returnBookButton" data-id="<%=book.id%>">Вернуть</button>
+                  <% } %>
+               </li>
+
+            </ul>
+         </div>
+      </div>
+
+   </div>
+</main>
+
+<footer>
+    <%- include('./partials/footer.ejs'); %>
+</footer>
+
+</body>
+</html>

@@ -4,7 +4,7 @@
     <%- include('./partials/head.ejs'); %>
 </head>
 <body class="container">
-    <script type="text/javascript" src="/js/requests.js" defer></script>
+    <script type="text/javascript" src="/js/client.js" defer></script>
 
     <header>
         <%- include('./partials/header.ejs'); %>
@@ -21,6 +21,8 @@
                                     Title <%= book.title %>, release <%= book.release %>, id=<%= book.id %>
                                 </li>
                                 <button class="deleteButton" data-id="<%=book.id%>">Удалить</button>
+                            <%- include('./partials/delete-dialog.ejs'); %>
+                                <button class="openButton" data-id="<%=book.id%>">Подробнее</button>
 
                         <% }); %>
                     </ul>
