@@ -1,11 +1,11 @@
 import express from 'express';
 import passport from 'passport';
 import BookStorage from "./storage/BookStorage.js";
-import path from "path";
 
 const router = express.Router();
-const __dirname = path.resolve();
 let bookStorage = new BookStorage();
+let regularCheck = /^[a-zA-Zа-яА-Я]*\s(([a-zA-Zа-яА-Я]*)|([a-zA-Zа-яА-Я]\.))\s(([a-zA-Zа-яА-Я]*)|([a-zA-Zа-яА-Я]\.))$/u;
+let regularCheckDate = /^\d{4}[-](0?[1-9]|1[012])[-](0?[1-9]|[12][0-9]|3[01])$/;
 
 router.get('/', checkAuthenticated, (req, res) => {
     res.render('index.ejs', { books: bookStorage.books })
@@ -21,21 +21,10 @@ router.post('/login', checkNotAuthenticated, passport.authenticate('local', {
     failureFlash: true
 }))
 
-router.get('/register', checkNotAuthenticated, (req, res) => {
-    res.render('register.ejs')
-})
-
-router.post('/register', checkNotAuthenticated, async (req, res) => {
-    try {
-        res.redirect('/login')
-    } catch {
-        res.redirect('/register')
-    }
-})
-
-router.delete('/logout', (req, res) => {
-    req.logOut()
-    res.redirect('/login')
+router.get('/logout', (req, res) => {
+    req.logout(function (err) {
+        res.redirect('/login');
+    });
 })
 
 function checkAuthenticated(req, res, next) {
@@ -52,29 +41,40 @@ function checkNotAuthenticated(req, res, next) {
     next()
 }
 
-router.post('/library', (req, res) => {
-    if( req.body.author && req.body.title && req.body.release ) {
+router.post('/library', checkAuthenticated, (req, res) => {
+    if( regularCheck.test(req.body.author) && req.body.title && regularCheckDate.test(req.body.release) ) {
         bookStorage.addBook(req.body.author, req.body.title, req.body.release);
     }
-    res.redirect('/')
+    res.redirect('/');
 });
 
-router.get('/library/:id', (req, res) => {
+router.get('/library/:id', checkAuthenticated, (req, res) => {
     res.render('bookPage.ejs', {book: bookStorage.getById(req.params.id)})
 })
 
-router.put('/library/:id', (req, res) => {
+router.put('/library/:id', checkAuthenticated, (req, res) => {
     let mapData = new Map(Object.entries(req.body));
     mapData.forEach((value, key) => {
-        console.log(key, value);
         bookStorage.updateBook(req.params.id, key, value);
     })
     res.render('bookPage.ejs', {book: bookStorage.getById(req.params.id)})
 });
 
-router.delete('/library/:id', (req, res) => {
+router.delete('/library/:id', checkAuthenticated, (req, res) => {
     bookStorage.deleteById(req.params.id);
     res.sendStatus(200);
+})
+
+router.get('/library/sort/overdue', checkAuthenticated, (req, res) => {
+    res.render('index.ejs', {books: bookStorage.getAllOverdue()})
+})
+
+router.get('/library/sort/instock', checkAuthenticated, (req, res) => {
+    res.render('index.ejs', {books: bookStorage.getAllInStock()})
+})
+
+router.get('/library/sort/given', checkAuthenticated, (req, res) => {
+    res.render('index.ejs', {books: bookStorage.getAllSortedByReturnDate()})
 })
 
 export default router;

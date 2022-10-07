@@ -1,0 +1,100 @@
+
+.login-container{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
+
+.title-box{
+    border-bottom: 0.5px solid #484848;
+    width: 50vw;
+    display: flex;
+    justify-content: center;
+    margin: 20vh 0 5vh 0;
+}
+
+.input-title{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 2rem;
+    color: #484848;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.6;
+}
+
+.input-button {
+    padding: 8px 12px;
+    outline: none;
+    border: 0;
+    color: #fff;
+    border-radius: 4px;
+    background: #8c7569;
+    transition: 0.3s;
+    cursor: pointer;
+    width: 15vw;
+    font-family: 'Raleway';
+    font-size: 17px;
+}
+.input-button:hover {
+    background: #55311c;
+}
+
+
+.input-label {
+    color: #484848;
+    opacity: 0.8;
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.7px;
+    transition: 0.3s;
+    font-family: 'Raleway';
+}
+
+.input-block {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 10px 8px;
+    border: 1px solid #484848;
+    margin-bottom: 20px;
+    transition: 0.3s;
+    width: 40vw;
+}
+
+input {
+    outline: 0;
+    border: 0;
+    padding: 4px 0 0;
+    font-size: 14px;
+    font-family: 'Raleway';
+}
+
+@media only screen and (max-device-width: 600px){
+    .title-box {
+        width: 65vw;
+        margin: 15vh 0 3vh 0;
+    }
+    .input-title {
+        font-size: 3rem;
+    }
+    .input-block{
+        width: 65vw;
+    }
+    .input-label{
+        font-size: 1.5rem;
+    }
+    input{
+        font-size: 2rem;
+    }
+    .input-button{
+        width: 15vw;
+        font-size: 2.5rem;
+    }
+}

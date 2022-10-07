@@ -32,7 +32,8 @@ export default class BookStorage {
         return book;
     }
 
-    addBook = (author, title, release, status = true, currentUser = "", returnDate = "", id = "id" + Math.random().toString(16).slice(2)) => {
+    addBook = (author, title, release, status = true, currentUser = "",
+               returnDate = "", id = "id" + Math.random().toString(16).slice(2)) => {
         this.books.push({
             id: id,
             author: author,
@@ -65,6 +66,42 @@ export default class BookStorage {
             this.books.splice(index, 1);
         }
         this.#updateBookStorage();
+    }
+
+    getAllOverdue = () => {
+        let result = [];
+        this.books.sort(function(a,b){
+            return new Date(a.returnDate) - new Date(b.returnDate);
+        });
+        this.books.forEach((elem) => {
+            if(elem.available === false && (new Date(elem.returnDate) < new Date(new Date().toJSON().slice(0, 10)))) {
+                result.push(elem);
+            }
+        })
+        return result;
+    }
+
+    getAllSortedByReturnDate = () => {
+        let result = [];
+        this.books.sort(function(a,b){
+            return new Date(a.returnDate) - new Date(b.returnDate);
+        });
+        this.books.forEach((elem) => {
+            if(elem.available === false) {
+                result.push(elem);
+            }
+        })
+        return result;
+    }
+
+    getAllInStock = () => {
+        let result = [];
+        this.books.forEach((elem) => {
+            if(elem.available === true) {
+                result.push(elem);
+            }
+        })
+        return result;
     }
 
 }

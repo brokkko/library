@@ -4,10 +4,11 @@
     <%- include('./partials/head.ejs'); %>
 </head>
 <body class="container">
+    <link href="/css/header.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="/js/client.js" defer></script>
 
     <header>
-        <%- include('./partials/header.ejs'); %>
+        <%- include('./header.ejs'); %>
     </header>
     <main>
         <div class="row">
@@ -27,27 +28,30 @@
                         <% }); %>
                     </ul>
                     <form>
-                        <button type="submit">Log Out</button>
+                        <button id="logOut" type="submit">Log Out</button>
                     </form>
                 </div>
             </div>
-
             <div class="col-sm-4">
                 <div class="well">
-                    <form action="/library" method="POST">
+                    <form >
                         <div>
                             <label for="author">Автор</label>
-                            <input type="text" id="author" name="author" required>
+                            <input type="text" id="author">
                         </div>
                         <div>
                             <label for="title">Название</label>
-                            <input type="text" id="title" name="title" required>
+                            <input type="text" id="title">
                         </div>
                         <div>
                             <label for="release">Дата выпуска</label>
-                            <input type="text" id="release" name="release" required>
+                            <input type="date" id="release">
                         </div>
-                        <button type="submit">Добавить книгу</button>
+<!--                        <div>-->
+<!--                            <label for="cover">Обложка книги</label>-->
+<!--                            <input type="file" id="cover" name="cover" required>-->
+<!--                        </div>-->
+                        <button id="add-book-button" type="submit">Добавить книгу</button>
                     </form>
                 </div>
             </div>

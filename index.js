@@ -20,12 +20,11 @@ let admin = loadJSON('./passport/admin.json');
 
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, 'views')))
-
 app.set('view-engine', 'ejs')
 app.use(express.urlencoded({ extended: false }))
 app.use(flash())
 app.use(session({
-    secret: "hihihi",
+    secret: "secret",
     resave: true,
     saveUninitialized: false
 }))

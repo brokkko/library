@@ -18,7 +18,9 @@ if(getBookButton !== null) {
 
 if(confirmBtn !== null) {
     confirmBtn.addEventListener( 'click', (e) => {
-        if (bookUserName.value === "" || returnDate.value === "")
+        let regularCheck = /^[a-zA-Zа-яА-Я]*\s(([a-zA-Zа-яА-Я]*)|([a-zA-Zа-яА-Я]\.))\s(([a-zA-Zа-яА-Я]*)|([a-zA-Zа-яА-Я]\.))$/u;
+        if (regularCheck.test(bookUserName.value ) ||
+            returnDate.value === "" || (new Date(returnDate.value) <= new Date(new Date().toJSON().slice(0, 10))))
             e.preventDefault();
         else {
             let tmp = {currentUser: bookUserName.value, returnDate: returnDate.value, available: false};
@@ -56,6 +58,7 @@ if (returnBookButton !== null) {
             },
             body: JSON.stringify(tmp)
         }).then((response) => {
+            console.log(response)
             if(response.ok) {
                 window.location.reload();
             }
@@ -68,23 +71,69 @@ if (returnBookButton !== null) {
 const authorEditor = document.getElementById('author-editor');
 const titleEditor = document.getElementById('title-editor');
 const releaseEditor = document.getElementById('release-editor');
+let regularCheck = /^[a-zA-Zа-яА-Я]*\s(([a-zA-Zа-яА-Я]*)|([a-zA-Zа-яА-Я]\.))\s(([a-zA-Zа-яА-Я]*)|([a-zA-Zа-яА-Я]\.))$/u;
+let regularCheckDate = /^\d{4}[-](0?[1-9]|1[012])[-](0?[1-9]|[12][0-9]|3[01])$/;
 
 if(authorEditor !== null && titleEditor !== null && releaseEditor !== null) {
     authorEditor.addEventListener('focusout', (event) => {
         event.target.style.background = 'gray';
-        let tmp = {author: authorEditor.innerText};
-        fetch('/library/' + getBookButton.getAttribute('data-id'), {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(tmp)
-        }).then((response) => {
-            if(response.ok) {
+        if(regularCheck.test(authorEditor.innerText)){
+            let tmp = {author: authorEditor.innerText};
+            fetch('/library/' + getBookButton.getAttribute('data-id'), {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(tmp)
+            }).then((response) => {
+                if(response.ok) {
+                    window.location.reload();
+                }
+                return false;
+            })
+        } else {
+            event.target.style.background = 'red';
+        }
+    });
+    titleEditor.addEventListener('focusout', (event) => {
+        event.target.style.background = 'gray';
+            let tmp = {title: titleEditor.innerText};
+            fetch('/library/' + getBookButton.getAttribute('data-id'), {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(tmp)
+            }).then((response) => {
+                if(response.ok) {
+                    window.location.reload();
+                }
+                return false;
+            })
+    });
+    releaseEditor.addEventListener('focusout', (event) => {
+
+        if(regularCheckDate.test(releaseEditor.innerText) &&
+            (new Date(releaseEditor.innerText) <= new Date(new Date().toJSON().slice(0, 10)))) {
+            let tmp = {release: releaseEditor.innerText};
+            fetch('/library/' + getBookButton.getAttribute('data-id'), {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(tmp)
+            }).then((response) => {
+                if(response.ok) {
+                    window.location.reload();
+                }
+                return false;
+            })
+        } else{
+            event.target.style.background = 'red';
+            setTimeout(() => {
                 window.location.reload();
-            }
-            return false;
-        })
+            }, 500)
+        }
     });
 }
 
