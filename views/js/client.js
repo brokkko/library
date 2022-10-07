@@ -55,12 +55,66 @@ document.getElementById('logOut').addEventListener('click', (e) => {
     })
 })
 
-const author = document.getElementById('author');
-const title = document.getElementById('title');
-const release = document.getElementById('release');
+const author = document.getElementById('add-author');
+const title = document.getElementById('add-title');
+const release = document.getElementById('add-release');
+//
+// document.getElementById('add-book-button').addEventListener('click', (e) => {
+//     console.log(author.innerText)
+//     console.log(title.innerText)
+//     console.log(release.innerText)
+// })
+const addDialog = document.getElementById('add-dialog');
+const addBookButton = document.getElementById('add-book-button');
+const addCancelButton = document.getElementById('addCancelButton');
 
-document.getElementById('add-book-button').addEventListener('click', (e) => {
-    console.log(author.innerText)
-    console.log(title.innerText)
-    console.log(release.innerText)
-})
+document.getElementById('show-add-info-button').addEventListener('click', () => {
+    if (typeof addDialog.showModal === "function") {
+        addDialog.show();
+        setTimeout(() => {
+            addDialog.classList.add('show');
+        }, 300);
+    }
+});
+
+if(addBookButton !== null) {
+    addBookButton.addEventListener( 'click', (e) => {
+        if (!regularCheck.test(author.value)) {
+            e.preventDefault();
+            author.style.borderColor = "red";
+            return
+        } if(title.value === ""){
+            title.style.borderColor = "red";
+            e.preventDefault();
+        } if(new Date(release.value) > new Date(new Date().toJSON().slice(0, 10))) {
+            release.style.borderColor = "red";
+            e.preventDefault();
+        } else {
+            addDialog.classList.remove('show');
+            let tmp = {author: author.value, title: title.value, release: release.value};
+            addDialog.close();
+            fetch('/library/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(tmp)
+            }).then((response) => {
+                if(response.ok) {
+                    window.location.reload();
+                }
+                return false;
+            })
+        }
+    });
+}
+
+if(addCancelButton !== null) {
+    addCancelButton.addEventListener('click', () => {
+        author.value = "";
+        title.value = "";
+        release.value = "";
+        addDialog.close();
+        addDialog.classList.remove('show');
+    });
+}

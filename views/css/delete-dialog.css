@@ -1,0 +1,12 @@
+#delete-dialog {
+    padding: 1.6rem;
+    width: 50vw;
+
+}
+
+#delete-dialog p{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.3rem;
+}

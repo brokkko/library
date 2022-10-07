@@ -4,9 +4,10 @@
     <%- include('./partials/head.ejs'); %>
 </head>
 <body class="container">
-<!--<script type="text/javascript" src="/js/client.js" defer></script>-->
 <script type="text/javascript" src="/js/bookPageClient.js" defer></script>
 <link href="/css/bookPage.css" rel="stylesheet" type="text/css">
+<link href="/css/add-dialog.css" rel="stylesheet" type="text/css">
+<link href="/css/user-dialog.css" rel="stylesheet" type="text/css">
 
 <main>
    <div class="bookPage">
@@ -17,41 +18,79 @@
 
       <div class="right-wrapper">
          <div class="page-info">
-            <ul>
 
-               <li>
-                  Автор:
-                  <div contenteditable="true" id="author-editor">
-                     <strong><%= book.author %></strong>
-                  </div>
-                  <br>
-                  Название:
-                  <div contenteditable="true" id="title-editor">
-                     <%= book.title %>
-                  </div>
-                  <br>
-                  Дата выхода:
-                  <div contenteditable="true" id="release-editor">
-                     <%= book.release %>
-                  </div>
-                  <br>
-                  <% if(book.available) { %>
+            <div class="page-element-item">
+               <br>
+               <label>
+                  <strong>
+                     Автор:
+                  </strong>
+               </label>
+
+               <div class="editable-element" contenteditable="true" id="author-editor">
+                  <%= book.author %>
+               </div>
+               <br>
+               <label>
+                  <strong>
+                     Название:
+                  </strong>
+               </label>
+               <div class="editable-element" contenteditable="true" id="title-editor">
+                  <%= book.title %>
+               </div>
+               <br>
+               <label>
+                  <strong>
+                     Дата выхода:
+                  </strong>
+               </label>
+               <div class="editable-element" contenteditable="true" id="release-editor">
+                  <%= book.release %>
+               </div>
+            </div>
+            <% if(book.available) { %>
+               <div class="book-state">
+                  <p>
                      Книга доступна в библиотеке
-                     <br>
-                     <%- include('./partials/user-dialog.ejs'); %>
-                     <button id="getBookButton" data-id="<%=book.id%>">Выдать</button>
-                  <% } else { %>
-                     Книга на руках
-                     <br>
-                     Пользователь: <%= book.currentUser %>
-                     <br>
-                     Когда должен вернуть: <%= book.returnDate %>
-                     <br>
-                     <button id="returnBookButton" data-id="<%=book.id%>">Вернуть</button>
-                  <% } %>
-               </li>
+                  </p>
+               </div>
 
-            </ul>
+               <br>
+               <%- include('./partials/user-dialog.ejs'); %>
+               <div class="page-element-buttons">
+                  <button class="dialog-button"  id="getBookButton" data-id="<%=book.id%>">Выдать</button>
+               </div>
+            <% } else { %>
+               <div class="book-state">
+                  <p>
+                     Книга на руках
+                  </p>
+               </div>
+               <div class="page-element-item">
+                  <div class="page-element-item-group">
+                     <label>
+                        Пользователь:
+                     </label>
+                     <div class="user-info">
+                        <%= book.currentUser %>
+                     </div>
+                  </div>
+                  <div class="page-element-item-group">
+                     <label>
+                        Дата возврата:
+                     </label>
+                     <div class="user-info">
+                        <%= book.returnDate %>
+                     </div>
+                  </div>
+                  <div class="page-element-buttons">
+                     <button class="dialog-button"  id="returnBookButton" data-id="<%=book.id%>">Вернуть</button>
+                     <button class="deleteButton dialog-button" id="back" >Назад</button>
+                  </div>
+               </div>
+
+            <% } %>
          </div>
       </div>
 

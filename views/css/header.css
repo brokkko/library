@@ -5,6 +5,9 @@
     width: 85vw;
     gap: 22px;
     margin-bottom: 4vh;
+
+    z-index: 101;
+    position: relative;
 }
 
 .main-icon{
@@ -47,15 +50,15 @@
     display: flex;
     align-items: center;
     flex-wrap: nowrap;
-    margin: 0 20vw 0 20vw;
+    margin: 0 19vw 0 19vw;
     gap: 3vw;
 }
 .nav-link-a{
     font-family: 'Raleway';
     font-style: normal;
     font-weight: 400;
-    font-size: 1.2rem;
-    line-height: 8px;
+    font-size: 1.4rem;
+    line-height: 10px;
     color: #6F6F6F;
 }
 .nav-link-a:hover{

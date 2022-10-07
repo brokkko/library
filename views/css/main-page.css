@@ -1,0 +1,62 @@
+main{
+    display: flex;
+    justify-content: center;
+}
+.page-elements{
+    gap: 3vw;
+    display: flex;
+    max-width: 85vw;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.page-element{
+    min-width: 35vw;
+    width: 35vw;
+    height: 15vw;
+    background-color: #F6F6F6;
+}
+
+/*.page-element:last-child{*/
+/*    align-self: flex-start;*/
+/*    margin-right: 33vw;*/
+/*}*/
+
+.page-element-item{
+    margin: 5%;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.3rem;
+    color: #212121;
+}
+
+.page-element-item label{
+    margin: 0 40% 2% 0;
+}
+
+.page-element-buttons{
+    display: flex;
+    justify-content: center;
+    gap: 20%;
+}
+
+.deleteButton, .openButton{
+    font-size: 1.4rem;
+    width: 10vw;
+}
+
+@media only screen and (max-device-width: 600px){
+    .page-elements{
+        flex-direction: column;
+    }
+
+    .page-element{
+        min-width: 70vw;
+        width: 70vw;
+        height: 35vw;
+        background-color: #F6F6F6;
+    }
+}
+

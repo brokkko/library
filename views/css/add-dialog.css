@@ -1,0 +1,64 @@
+.add-dialog {
+    border: none !important;
+    /*border-radius: calc(5px * var(--ratio));*/
+    /*box-shadow: 0 0 #0000, 0 0 #0000, 10px 25px 50px -12px rgba(0, 0, 0, 0.25);*/
+    padding: 1.6rem;
+    width: 35vw;
+    z-index: 98;
+
+
+    opacity: 0;
+    /*display: none;*/
+    transform: translateY(-100%);
+    transition-duration: 700ms;
+
+
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.show{
+    /*display: block;*/
+    transform: translateY(100%);
+    opacity: 1;
+    box-shadow: 0 0 #0000, 0 0 #0000, 10px 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.dialog-button{
+    background-color: #4B4B4B;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.2rem;
+
+
+    display: block;
+    width: 300px;
+
+    color: #FFFFFF;
+    margin-top: 10px;
+}
+
+.add-dialog form{
+    width: 100%;
+    margin-left: 4em;
+}
+
+.add-dialog label{
+    width: 30%;
+    margin-top: 5px;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.3rem;
+    color: #4B4B4B;
+}
+
+.add-dialog form input{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.3rem;
+}

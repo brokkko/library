@@ -5,63 +5,46 @@
 </head>
 <body class="container">
     <link href="/css/header.css" rel="stylesheet" type="text/css">
+    <link href="/css/add-dialog.css" rel="stylesheet" type="text/css">
+    <link href="/css/main-page.css" rel="stylesheet" type="text/css">
+    <link href="/css/delete-dialog.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="/js/client.js" defer></script>
 
-    <header>
-        <%- include('./header.ejs'); %>
-    </header>
-    <main>
-        <div class="row">
-            <div class="col-sm-8">
-                <div class="jumbotron">
-                    <ul>
-                        <% books.forEach(function(book) { %>
+    <div class="page-container">
+        <header>
+            <%- include('./header.ejs'); %>
+            <%- include('./partials/add-dialog.ejs'); %>
+        </header>
+        <main>
+            <div class="page-elements">
 
-                                <li>
-                                    <strong><%= book.author %></strong>
-                                    Title <%= book.title %>, release <%= book.release %>, id=<%= book.id %>
-                                </li>
-                                <button class="deleteButton" data-id="<%=book.id%>">Удалить</button>
-                            <%- include('./partials/delete-dialog.ejs'); %>
-                                <button class="openButton" data-id="<%=book.id%>">Подробнее</button>
+                    <% books.forEach(function(book) { %>
+                        <div class="page-element">
+                            <div class="page-element-item">
+                                <label>
+                                    <strong><%= book.title %></strong>
+                                </label>
+                                <label>
+                                    <%= book.author %>
+                                </label>
+                                <label>
+                                    <%= book.release %>
+                                </label>
+                            </div>
+                            <div class="page-element-buttons">
+                                <button class="openButton dialog-button" data-id="<%=book.id%>">Подробнее</button>
+                                <%- include('./partials/delete-dialog.ejs'); %>
+                                <button class="deleteButton dialog-button" data-id="<%=book.id%>">Удалить</button>
+                            </div>
+                        </div>
 
-                        <% }); %>
-                    </ul>
-                    <form>
-                        <button id="logOut" type="submit">Log Out</button>
-                    </form>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="well">
-                    <form >
-                        <div>
-                            <label for="author">Автор</label>
-                            <input type="text" id="author">
-                        </div>
-                        <div>
-                            <label for="title">Название</label>
-                            <input type="text" id="title">
-                        </div>
-                        <div>
-                            <label for="release">Дата выпуска</label>
-                            <input type="date" id="release">
-                        </div>
-<!--                        <div>-->
-<!--                            <label for="cover">Обложка книги</label>-->
-<!--                            <input type="file" id="cover" name="cover" required>-->
-<!--                        </div>-->
-                        <button id="add-book-button" type="submit">Добавить книгу</button>
-                    </form>
-                </div>
+                    <% }); %>
+
             </div>
 
-        </div>
-    </main>
 
-    <footer>
-        <%- include('./partials/footer.ejs'); %>
-    </footer>
+        </main>
+    </div>
 
 </body>
 </html>

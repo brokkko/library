@@ -19,7 +19,7 @@ if(getBookButton !== null) {
 if(confirmBtn !== null) {
     confirmBtn.addEventListener( 'click', (e) => {
         let regularCheck = /^[a-zA-Zа-яА-Я]*\s(([a-zA-Zа-яА-Я]*)|([a-zA-Zа-яА-Я]\.))\s(([a-zA-Zа-яА-Я]*)|([a-zA-Zа-яА-Я]\.))$/u;
-        if (regularCheck.test(bookUserName.value ) ||
+        if (!regularCheck.test(bookUserName.value ) ||
             returnDate.value === "" || (new Date(returnDate.value) <= new Date(new Date().toJSON().slice(0, 10))))
             e.preventDefault();
         else {
@@ -136,5 +136,10 @@ if(authorEditor !== null && titleEditor !== null && releaseEditor !== null) {
         }
     });
 }
+
+const back = document.getElementById('back');
+back.addEventListener('click', () => {
+    window.location.replace("/");
+});
 
 
