@@ -7,7 +7,7 @@ main{
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-around;
-    align-items: center;
+    align-content: flex-start;
     gap: 3vw;
 
     max-width: 80vw;
@@ -23,15 +23,15 @@ main{
     color: #000000;
 }
 
-.left-wrapper{
-    width: 35vw;
-    height: 80vh;
+/*.left-wrapper{*/
+/*    width: 35vw;*/
+/*    height: 20vh;*/
 
-    margin-top: 5%;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-}
+/*    margin-top: 5%;*/
+/*    display: flex;*/
+/*    align-items: flex-start;*/
+/*    justify-content: center;*/
+/*}*/
 
 .page-element-item{
     display: flex;
@@ -57,7 +57,8 @@ main{
 }
 
 img {
-    width: 20vw;
+    width: 30vw;
+    height: fit-content;
     border-radius: 2px;
 }
 
@@ -83,4 +84,10 @@ img {
 
     color: #000000;
 }
+@media only screen and (max-device-width: 600px){
+    .bookPage{
+        flex-direction: column;
+    }
 
+
+}
