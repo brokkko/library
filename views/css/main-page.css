@@ -14,8 +14,8 @@ main{
 .page-element{
     min-width: 35vw;
     width: 35vw;
-    height: 15vw;
     background-color: #F6F6F6;
+    padding-bottom: 1em;
 }
 
 /*.page-element:last-child{*/
@@ -39,12 +39,12 @@ main{
 .page-element-buttons{
     display: flex;
     justify-content: center;
-    gap: 20%;
+
 }
 
-.deleteButton, .openButton{
+.deleteButton, .openButton {
     font-size: 1.4rem;
-    width: 10vw;
+    margin: 0em 1em 0 1em;
 }
 
 @media only screen and (max-device-width: 600px){
