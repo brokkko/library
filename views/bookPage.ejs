@@ -12,9 +12,9 @@
 <main>
    <div class="bookPage">
 
-<!--      <div class="left-wrapper">-->
-         <img class="left-wrapper" src="/images/book.png" />
-<!--      </div>-->
+<!--&lt;!&ndash;      <div class="left-wrapper">&ndash;&gt;-->
+<!--         <img class="left-wrapper" src="/images/book.png" />-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
 
       <div class="right-wrapper">
          <div class="page-info">
@@ -26,18 +26,24 @@
                      Автор:
                   </strong>
                </label>
-
-               <div class="editable-element" contenteditable="true" id="author-editor">
-                  <%= book.author %>
+               <div class="editable-container">
+                  <div class="editable-element" contenteditable="true" id="author-editor">
+                     <%= book.author %>
+                  </div>
+                  <img src="/images/edit.svg" />
                </div>
+
                <br>
                <label>
                   <strong>
                      Название:
                   </strong>
                </label>
-               <div class="editable-element" contenteditable="true" id="title-editor">
-                  <%= book.title %>
+               <div class="editable-container">
+                  <div class="editable-element" contenteditable="true" id="title-editor">
+                     <%= book.title %>
+                  </div>
+                  <img src="/images/edit.svg" />
                </div>
                <br>
                <label>
@@ -45,8 +51,11 @@
                      Дата выхода:
                   </strong>
                </label>
-               <div class="editable-element" contenteditable="true" id="release-editor">
-                  <%= book.release %>
+               <div class="editable-container">
+                  <div class="editable-element" contenteditable="true" id="release-editor">
+                     <%= book.release %>
+                  </div>
+                  <img src="/images/edit.svg" />
                </div>
             </div>
             <% if(book.available) { %>
@@ -60,6 +69,7 @@
                <%- include('./partials/user-dialog.ejs'); %>
                <div class="page-element-buttons">
                   <button class="dialog-button"  id="getBookButton" data-id="<%=book.id%>">Выдать</button>
+                  <button class="deleteButton dialog-button" id="back" >Назад</button>
                </div>
             <% } else { %>
                <div class="book-state">
@@ -96,10 +106,6 @@
 
    </div>
 </main>
-
-<footer>
-    <%- include('./partials/footer.ejs'); %>
-</footer>
 
 </body>
 </html>

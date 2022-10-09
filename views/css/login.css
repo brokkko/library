@@ -35,7 +35,7 @@
     border: 0;
     color: #fff;
     border-radius: 4px;
-    background: #8c7569;
+    background: #5e5e7e;
     transition: 0.3s;
     cursor: pointer;
     width: 15vw;
@@ -43,7 +43,7 @@
     font-size: 17px;
 }
 .input-button:hover {
-    background: #55311c;
+    background: #32323d;
 }
 
 
